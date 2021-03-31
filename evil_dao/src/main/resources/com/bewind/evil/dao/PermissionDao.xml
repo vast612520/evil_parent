@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bewind.evil.dao.PermissionDao">
+
+    <!--分页查询-->
+    <select id="findPage" parameterType="String" resultType="Permission" >
+        select * from t_permission
+        <if test="value != null and value.length > 0">
+            where name like #{value} or keyword like #{value}
+        </if>
+    </select>
+    <!--添加权限数据-->
+    <insert id="add" parameterType="Permission">
+        insert into t_permission(name,keyword,description)
+        values (#{name},#{keyword},#{description});
+    </insert>
+
+    <!--根据id查询数据-->
+    <select id="findById" resultType="com.bewind.evil.pojo.Permission" parameterType="int">
+
+        select * from t_permission where id = #{id};
+    </select>
+
+
+    <!--编辑权限数据-->
+    <update id="update" parameterType="Permission">
+        update t_permission
+        set name = #{name},
+        keyword = #{keyword},
+        description = #{description}
+        where id = #{id};
+    </update>
+
+    <!--根据id删除权限数据-->
+    <delete id="deleteById" parameterType="int">
+        delete from t_permission where id = #{id};
+    </delete>
+
+    <!--查询权限是否被应用-->
+    <select id="queryPermissionAndRole" parameterType="int" resultType="Integer">
+
+        select count(*) from t_role_permission
+        where   permission_id = #{id};
+    </select>
+
+
+    <!--查询所有权限-->
+    <select id="findAll" resultType="com.bewind.evil.pojo.Permission">
+        select * from t_permission;
+    </select>
+</mapper>

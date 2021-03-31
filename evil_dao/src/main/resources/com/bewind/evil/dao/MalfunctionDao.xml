@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bewind.evil.dao.MalfunctionDao">
+    <!--查询所有检修数据-->
+    <select id="findAll" resultType="Malfunction">
+        select *
+        from t_malfunction;
+    </select>
+
+    <!--添加检修数据-->
+    <insert id="add" parameterType="Malfunction">
+        insert into t_malfunction (name, theme, address, trouble, phone,createTime)
+        values (#{name}, #{theme}, #{address}, #{trouble}, #{phone}, #{createTime});
+    </insert>
+
+    <!--分页条件查询所有检修项数据-->
+    <select id="findPage" resultType="Malfunction" parameterType="String">
+        select * From t_malfunction
+        <where>
+            <if test="isFinish != null and isFinish != '' ">
+                and is_finish = #{isFinish}
+            </if>
+            and is_delete = '0'
+        </where>
+
+    </select>
+
+    <!--根据id删除检修项数据-->
+    <delete id="deleteById" parameterType="int">
+        delete from t_malfunction where id=#{id}
+    </delete>
+
+    <!--根据id回显检修数据-->
+    <select id="findById" resultType="Malfunction">
+        select *
+        from t_malfunction where id = #{id};
+    </select>
+
+    <update id="update" parameterType="Malfunction">
+        update t_malfunction
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="updateTime != null">updateTime = #{updateTime},</if>
+            <if test="isFinish != null">is_finish = #{isFinish},</if>
+            <if test="way != null">way = #{way},</if>
+            <if test="isDelete != null">
+                is_delete = #{isDelete},
+            </if>
+        </trim>
+        where id = #{id};
+    </update>
+</mapper>

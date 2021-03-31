@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/evil_common/evil_common.iml" filepath="$PROJECT_DIR$/evil_common/evil_common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/evil_dao/evil_dao.iml" filepath="$PROJECT_DIR$/evil_dao/evil_dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/evil_interface/evil_interface.iml" filepath="$PROJECT_DIR$/evil_interface/evil_interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/evil_jobs/evil_jobs.iml" filepath="$PROJECT_DIR$/evil_jobs/evil_jobs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/evil_parent.iml" filepath="$PROJECT_DIR$/evil_parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/evil_pojo/evil_pojo.iml" filepath="$PROJECT_DIR$/evil_pojo/evil_pojo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/evil_service/evil_service.iml" filepath="$PROJECT_DIR$/evil_service/evil_service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/evil_web/evil_web.iml" filepath="$PROJECT_DIR$/evil_web/evil_web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springsecurity_demo/springsecurity_demo.iml" filepath="$PROJECT_DIR$/springsecurity_demo/springsecurity_demo.iml" />
+    </modules>
+  </component>
+</project>

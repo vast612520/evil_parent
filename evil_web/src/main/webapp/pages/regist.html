@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>regist</title>
+</head>
+<body>
+<div id="div-form" style="margin: 0px auto;width: 480px;height: auto;">
+    <form id="register" action="index.html" method="post" onsubmit="return check()">
+        <table>
+            <thead>
+            <tr>
+                <td colspan="3"><label>注册</label></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><label>ID</label></td>
+                <td><input type="text" class="input-text" name="userid" id="userid" placeholder="1~8位字母数"></td>
+                <td><label class="erromessage" id="id">1~8位字母数字</label></td>
+            </tr>
+            <tr>
+                <td><label>昵称</label></td>
+                <td><input type="text" class="input-text" name="username" id="username" value="小孙"></td>
+                <td><label class="erromessage" id="name">用户名不能为空</label></td>
+            </tr>
+            <tr>
+                <td><label>密码</label></td>
+                <td><input type="password" class="input-text" id="pass" placeholder="6位（数字字母组合）"></td>
+                <td><label class="erromessage" id="passone">6位（数字字母组合）</label></td>
+            </tr>
+            <tr>
+                <td><label>确认密码</label></td>
+                <td><input type="password" class="input-text" name="userpass" id="passnew"></td>
+                <td><label class="erromessage" id="repass">密码不能为空</label></td>
+            </tr>
+            <tr>
+                <td><label>性别</label></td>
+                <td><select id="sex" name="sex">
+                    <option>男</option>
+                    <option>女</option>
+                    <option>萝莉</option>
+                    <option>欧皇</option>
+                    <option>海豹</option>
+                </select></td>
+            </tr>
+            <tr>
+                <td><label>邮箱</label></td>
+                <td><input type="text" name="maile" class="input-text" id="mailevalue"></td>
+                <td><label class="erromessage" id="maile">用户名不能为空</label></td>
+            </tr>
+            <tr>
+                <td><label>电话</label></td>
+                <td><input type="text" name="phnumber" class="input-text" id="phonevalue"></td>
+                <td><label class="erromessage" id="phone">用户名不能为空</label></td>
+            </tr>
+            <tr><td colspan="3"><input type="submit" value="确认" style="font-size:24px;"></td>
+            </tr></tbody>
+        </table>
+    </form></div>
+</body>
+</html>

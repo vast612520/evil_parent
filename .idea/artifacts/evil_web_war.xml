@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="evil_web:war">
+    <output-path>$PROJECT_DIR$/evil_web/target</output-path>
+    <root id="archive" name="evil_web-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="evil_web:war exploded" />
+    </root>
+  </artifact>
+</component>

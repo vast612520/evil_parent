@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bewind.evil.dao.MenuDao">
+    <resultMap id="Menus" type="Menu">
+        <id property="id" column="id"/>
+        <result property="path" column="path"/>
+        <result property="name" column="name"/>
+        <result property="icon" column="icon"/>
+        <collection property="children" ofType="Menu">
+            <id property="id" column="mid"/>
+            <result property="name" column="mname"/>
+            <result property="path" column="mpath"/>
+            <result property="linkUrl" column="mLinkUrl"/>
+        </collection>
+    </resultMap>
+    <select id="findMenuByUsername" parameterType="String" resultMap="Menus">
+        SELECT * from
+        (select m.id id,m.path path,m.name name,m.icon icon,m.`level` `level`
+        from t_user u,t_user_role ur,t_role r,t_role_menu rm,t_menu m
+        where u.id=ur.user_id and ur.role_id=r.id and r.id=rm.role_id and rm.menu_id=m.id and u.username=#{username}) t1,
+        (select m.id mid,m.name mname,m.path mpath,m.linkUrl mLinkUrl,M.parentMenuId mParentMenuId
+        from t_user u,t_user_role ur,t_role r,t_role_menu rm,t_menu m
+        where u.id=ur.user_id and ur.role_id=r.id and r.id=rm.role_id and rm.menu_id=m.id and u.username=#{username}) t2
+        where t1.`level`=1 and t2.mParentMenuId=t1.id
+    </select>
+
+    <resultMap id="childrens" type="Menu">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <collection property="children" ofType="Menu">
+            <id property="id" column="cid"/>
+            <result property="name" column="cname"/>
+        </collection>
+    </resultMap>
+    <select id="findAll" resultMap="childrens">
+        SELECT m1.id,m1.name,m2.id cid,m2.name cname
+        from t_menu m1,t_menu m2 where m1.`level`=1 and m1.id=m2.parentMenuId
+    </select>
+
+    <select id="findMenuIdsByRoleId" parameterType="int" resultType="int">
+        SELECT * from t_menu m1,(select menu_id from t_role_menu where role_id=#{id}) m2  where m1.`level`=2 and m1.id=m2.menu_id
+    </select>
+    <insert id="add" parameterType="menu">
+        insert into t_menu(name,linkUrl,path,priority,icon,description,parentMenuId,level)
+        values(#{name},#{linkUrl},#{path},#{priority},#{icon},#{description},#{parentMenuId},CASE
+	WHEN ISNULL(#{parentMenuId}) THEN
+		1
+	ELSE
+		2
+    END)
+    </insert>
+    <select id="findByCondition" parameterType="string" resultType="menu">
+        select * from t_menu
+        <if test="value !=null and value.length>0">
+            where name like #{value}
+        </if>
+    </select>
+
+    <select id="findAllParent" resultType="menu">
+        select * from  t_menu where level=1
+    </select>
+
+    <delete id="deleteById" parameterType="int">
+        delete from t_menu where id=#{id}
+    </delete>
+
+    <select id="findById" parameterType="int" resultType="menu">
+        select * from t_menu where id=#{id}
+    </select>
+
+    <update id="update" parameterType="menu">
+        update t_menu set name=#{name},linkUrl=#{linkUrl},path=#{path},priority=#{priority},icon=#{icon},description=#{description},parentMenuId=#{parentMenuId},level=(case
+        when isnull(#{parentMenuId}) then
+             1
+        else
+             2
+        end) where id=#{id}
+    </update>
+</mapper>

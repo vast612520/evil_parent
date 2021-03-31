@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bewind.evil.dao.SysNoticeDao">
+    
+    <resultMap type="SysNotice" id="SysNoticeResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="type"    column="type"    />
+        <result property="content"    column="content"    />
+        <result property="status"    column="status"    />
+        <result property="createduser"    column="createdUser"    />
+        <result property="createtime"    column="createTime"    />
+        <result property="modifieduser"    column="modifiedUser"    />
+        <result property="modifiedtime"    column="modifiedTime"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectsysNoticeVo">
+        select id, title, type, content, status, createdUser, createTime, modifiedUser, modifiedTime, remark from sys_notice
+    </sql>
+
+    <select id="selectSysNoticeList" parameterType="java.lang.String" resultMap="SysNoticeResult">
+        <include refid="selectsysNoticeVo"/>
+        <where>
+            <if test="title != null and title !=''">
+                title like concat("%",#{title},"%")
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectSysNoticeById" parameterType="Integer" resultMap="SysNoticeResult">
+        <include refid="selectsysNoticeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysNotice" parameterType="SysNotice" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="content != null">content,</if>
+            <if test="status != null">status,</if>
+            <if test="createduser != null">createdUser,</if>
+            <if test="createtime != null">createTime,</if>
+            <if test="modifieduser != null">modifiedUser,</if>
+            <if test="modifiedtime != null">modifiedTime,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="content != null">#{content},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createduser != null">#{createduser},</if>
+            <if test="createtime != null">#{createtime},</if>
+            <if test="modifieduser != null">#{modifieduser},</if>
+            <if test="modifiedtime != null">#{modifiedtime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysNotice" parameterType="SysNotice">
+        update sys_notice
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createduser != null">createdUser = #{createduser},</if>
+            <if test="createtime != null">createTime = #{createtime},</if>
+            <if test="modifieduser != null">modifiedUser = #{modifieduser},</if>
+            <if test="modifiedtime != null">modifiedTime = #{modifiedtime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysNoticeById" parameterType="Integer">
+        delete from sys_notice where id = #{id}
+    </delete>
+
+    <delete id="deleteSysNoticeByIds" parameterType="String">
+        delete from sys_notice where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

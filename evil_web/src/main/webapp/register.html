@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>验证注册页面</title>
+    <script src="js/vuejs-2.5.16.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+            font-size: 12px;
+            line-height: 20px;
+        }
+        .main {
+            width: 525px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hr_1 {
+            font-size: 14px;
+            font-weight: bold;
+            color: #3275c3;
+            height: 35px;
+            border-bottom-width: 2px;
+            border-bottom-style: solid;
+            border-bottom-color: #3275c3;
+            vertical-align: bottom;
+            padding-left: 12px;
+        }
+        .left {
+            text-align: right;
+            width: 80px;
+            height: 25px;
+            padding-right: 5px;
+        }
+        .center {
+            width: 280px;
+        }
+        .in {
+            width: 130px;
+            height: 16px;
+            border: solid 1px #79abea;
+        }
+
+        .red {
+            color: #cc0000;
+            font-weight: bold;
+        }
+
+        div {
+            color: #F00;
+        }
+    </style>
+    <script type="text/javascript">
+    </script>
+</head>
+<body>
+<div id="app">
+    <form action="#" method="post" id="myform" onsubmit="return checkForm()">
+        <table class="main" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td><img src="img/logo.jpg" alt="logo" /><img src="img/banner.jpg" alt="banner" /></td>
+            </tr>
+            <tr>
+                <td class="hr_1">新用户注册</td>
+            </tr>
+            <tr>
+                <td style="height:10px;"></td>
+            </tr>
+            <tr>
+                <td>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td class="left">用户名：</td>
+                            <td class="center">
+                                <input id="username" v-model="user.username" name="user" type="text" class="in"
+                                       onfocus="showTips()"
+                                       onblur="checkUsername(this.value)"
+                                />
+                                <!--提示信息就可以在这儿里显示-->
+                                <span id="usernamespan"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="left">密码：</td>
+                            <td class="center">
+                                <input id="pwd" name="pwd" type="password" class="in" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="left">确认密码：</td>
+                            <td class="center">
+                                <input id="repwd" name="repwd" type="password" class="in"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="left">电子邮箱：</td>
+                            <td class="center">
+                                <input id="email" name="email" type="text" class="in"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <!-- 以1开头, 第二为是3,4,5,7,8的11位数字-->
+                            <td class="left">手机号码：</td>
+                            <td class="center">
+                                <input id="mobile" name="mobile" type="text" class="in" />
+                                <span id="mobilespan"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="left">生日：</td>
+                            <td class="center">
+                                <input id="birth" name="birth" type="text" class="in"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="left">&nbsp;</td>
+                            <td class="center">
+                                <input name="" type="image" @click="register()" src="img/register.jpg" />
+                            </td>
+                        </tr>
+                    </table></td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+<!-- 引入组件库 -->
+<script src="js/vue.js"></script>
+<script src="plugins/elementui/index.js"></script>
+
+<script>
+    var vue = new Vue({
+        el: "#app",
+        data: {
+            user:{
+                username:"zsf",
+                password: "123",
+                age: 149
+            }
+        },
+        methods: {
+            register: function () {
+                axios.post("路径", this.user).then(response=>{
+                    console.log(response)
+                // response.data 才是响应数据
+            })
+            }
+        }
+    })
+    var spanEle = document.getElementById("usernamespan");
+    // 获得焦点，进行提示
+    function showTips() {
+        // 使用innerHTML设置内容
+        spanEle.innerHTML="只能由英文字母和数字组成，长度为4～16个字符，并且以英文字母开头"
+
+    }
+
+    // 失去焦点，检查合法
+    function checkUsername(username) {
+        // 正则匹配
+        // 只能由英文字母和数字组成，长度为4～16个字符，并且以英文字母开头
+        var reg = /^[a-zA-Z][a-zA-Z0-9]{3,15}$/;
+        // 匹配输入的内容
+        var flag = reg.test(username);
+
+        if(flag){
+            spanEle.innerHTML = "<img src=\"img/gou.png\" height=\"31\" width=\"40\"/>"
+        }else{
+            spanEle.innerHTML = "<font color='red'>用户名非法</font>"
+        }
+    }
+
+</script>
+</html>
