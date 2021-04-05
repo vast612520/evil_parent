@@ -16,34 +16,42 @@
     <body class="hold-transition">
         <div id="app">
             <div class="content-header">
-                <h1>系统帮助<small>系统公告</small></h1>
+                <h1>留言讨论<small>留言讨论</small></h1>
                 <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
                     <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-                    <el-breadcrumb-item>系统帮助</el-breadcrumb-item>
-                    <el-breadcrumb-item>系统公告</el-breadcrumb-item>
+                    <el-breadcrumb-item>留言讨论</el-breadcrumb-item>
+                    <el-breadcrumb-item>留言讨论</el-breadcrumb-item>
                 </el-breadcrumb>
             </div>
+            <template>
+                <div>
+                    <span>从来没有真正的绝境</span>
+                    <el-divider>
+                    </el-divider>
+                    <span>只有心灵的迷途</span>
+                </div>
+            </template>
             <div class="app-container">
                 <div class="box">
-
-                    <div class="filter-container">
-                        <el-input placeholder="公告标题" v-model="pagination.queryString" style="width: 200px;"
-                                  class="filter-item" @keyup.enter.native="handleFilter"></el-input>
-                        <el-button @click="findPage()" class="dalfBut">查询</el-button>
-                        <el-button type="primary" class="butT" @click="handleCreate()">新建</el-button>
+                    <div class="filter-container" align="left">
+                        <el-button type="primary" class="el-icon-plus" @click="handleCreate()">新建</el-button>
+                        <el-button type="success" @click="findPage()" icon="el-icon-search" class="dalfBut">查询</el-button>
                     </div>
 
                     <el-table size="small" current-row-key="id" :data="dataList" stripe highlight-current-row>
                         <el-table-column type="index" align="center" label="序号"></el-table-column>
-                        <el-table-column prop="title" label="公告标题" align="center"></el-table-column>
-                        <el-table-column prop="type" label="公告类型" align="center"></el-table-column>
-                        <el-table-column prop="status" label="状态" align="center"></el-table-column>
-                        <el-table-column prop="createduser" label="创建者" align="center">
-                            <template slot-scope="scope">
-                                <el-button type="info" size="mini" @click="handleView(scope.row)">查看</el-button>
-                                <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-                                <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
-                            </template>
+                        <el-table-column prop="number" label="学号" align="center"></el-table-column>
+                        <el-table-column prop="phone" label="联系电话" align="center"></el-table-column>
+                        <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
+                        <el-table-column prop="content" label="留言内容" align="center"></el-table-column>
+                        <el-table-column prop="answer" label="管理员回复" align="center"></el-table-column>
+                        <el-table-column prop="created" label="创建人" align="center"></el-table-column>
+                        <el-table-column prop="createdTime" label="创建时间" align="center"></el-table-column>
+                        <el-table-column prop="updateTime" label="回复时间" align="center">
+                            <!--<template slot-scope="scope">-->
+                                <!--<el-button type="primary" size="mini" @click="handleUpdate(scope.row)">审批</el-button>-->
+                                <!--<el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>-->
+                            <!--</template>-->
                         </el-table-column>
                     </el-table>
 
@@ -60,27 +68,29 @@
                     <!-- 新增标签弹层 -->
                     <div class="add-form">
                         <!-- :visible.sync 新增时的弹窗-->
-                        <el-dialog title="新增公告" :visible.sync="dialogFormVisible">
+                        <el-dialog title="新增留言" :visible.sync="dialogFormVisible">
                             <el-form ref="dataAddForm" :model="formData" :rules="rules" label-position="right" label-width="100px">
                                 <el-row>
                                     <el-col :span="12">
-                                        <el-form-item label="公告标题" prop="title">
-                                            <el-input v-model="formData.title"/>
+                                        <el-form-item label="联系电话" prop="phone">
+                                            <el-input v-model="formData.phone" placeholder="联系电话"/>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="12">
-                                        <el-form-item label="类型" prop="type">
-                                            <el-select v-model="formData.type">
-                                                <el-option label="通知" value="1"></el-option>
-                                                <el-option label="公告" value="2"></el-option>
-                                            </el-select>
+                                        <el-form-item label="学号" prop="number">
+                                            <el-input v-model="formData.number"/>
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
                                 <el-row>
+                                    <el-col :span="12">
+                                        <el-form-item label="邮箱" prop="email">
+                                            <el-input v-model="formData.email"/>
+                                        </el-form-item>
+                                    </el-col>
                                     <el-col :span="24">
-                                        <el-form-item label="公告内容"   prop="content">
-                                            <el-input autosize="true" v-model="formData.content" type="textarea"/>
+                                        <el-form-item label="留言内容" prop="content" >
+                                            <el-input type="textarea " v-model="formData.content"/>
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
@@ -94,51 +104,45 @@
                         </el-dialog>
                     </div>
 
-                    <!-- 查看标签弹层 -->
-                    <div class="add-form">
-                        <el-dialog title="查看公告内容" :visible.sync="dialogFormVisible4View">
-                            <el-form ref="dataViewForm" :model="formData" :rules="rules" label-position="right"
-                                     label-width="100px">
-                                <el-row>
-                                    <el-col :span="24">
-                                        <el-form-item label="公告内容"   prop="content">
-                                            <el-input autosize="true" v-model="formData.content" type="textarea"/>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-                            </el-form>
-                            <div slot="footer" class="dialog-footer">
-                                <el-button @click="dialogFormVisible4View = false">确定</el-button>
-                            </div>
-                        </el-dialog>
-                    </div>
                     <!-- 编辑标签弹层 -->
                     <div class="add-form">
-                        <el-dialog title="公告" :visible.sync="dialogFormVisible4Edit">
+                        <el-dialog title="留言审核" :visible.sync="dialogFormVisible4Edit">
                             <el-form ref="dataEditForm" :model="formData" :rules="rules" label-position="right" label-width="100px">
                                 <el-row>
                                     <el-col :span="12">
-                                        <el-form-item label="公告标题" prop="title">
-                                            <el-input v-model="formData.title"/>
+                                        <el-form-item label="留言用户" prop="created">
+                                            <el-input v-model="formData.created"/>
                                         </el-form-item>
                                     </el-col>
                                     <el-col :span="12">
-                                        <el-form-item label="类型" prop="type">
-                                            <el-select v-model="formData.type">
-                                                <el-option label="通知" value="1"></el-option>
-                                                <el-option label="公告" value="2"></el-option>
+                                        <el-form-item label="学号" prop="number">
+                                            <el-input v-model="formData.number"/>
+                                        </el-form-item>
+                                    </el-col>
+                                </el-row>
+                                <el-row>
+                                    <el-col :span="12">
+                                        <el-form-item label="留言内容" prop="content">
+                                            <el-input type="textarea" v-model="formData.content"/>
+                                        </el-form-item>
+                                    </el-col>
+                                </el-row>
+                                <el-row>
+                                    <el-col :span="12">
+                                        <el-form-item label="管理员回复" prop="answer">
+                                            <el-input type="textarea" v-model="formData.answer"/>
+                                        </el-form-item>
+                                    </el-col>
+                                </el-row>
+                                <el-row>
+                                    <el-col :span="12">
+                                        <el-form-item label="是否通过审核" prop="isShow">
+                                            <el-select v-model="formData.isShow">
+                                            <el-option label="通过" value="1"></el-option>
+                                            <el-option label="未通过" value="0"></el-option>
                                             </el-select>
                                         </el-form-item>
                                     </el-col>
-                                </el-row>
-                                <el-row>
-                                    <el-col :span="24">
-                                        <el-form-item label="公告内容"   prop="content">
-                                            <el-input autosize="true" v-model="formData.content" type="textarea"/>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-                                <el-row>
                                 </el-row>
                             </el-form>
                             <div slot="footer" class="dialog-footer">
@@ -166,26 +170,25 @@
 					  currentPage: 1,//当前页码
 					  pageSize:10,//每页显示的记录数
 					  total:0,//总记录数
-					  queryString:null//查询条件
+					  queryString:'1'//查询条件
 				},
 				dataList: [],//当前页要展示的分页列表数据
                 formData: {},//表单数据
                 dialogFormVisible: false,//增加表单是否可见
                 dialogFormVisible4Edit:false,//编辑表单是否可见
-                dialogFormVisible4View:false,//查询表单是否可见
                 options: [{
                     value: '1',
-                    label: '已处理'
+                    label: '已审核'
                 }, {
                     value: '0',
-                    label: '未处理'
+                    label: '未审核'
+                }, {
+                    value: '',
+                    label: '全部'
                 }],
                 value: '',
                 rules: {//校验规则
-                    name: [{ required: true, message: '需要有报修人', trigger: 'blur' }],
-                    type: [{ required: true, message: '类型不能为空', trigger: 'blur' }],
-                    title: [{ required: true, message: '标题不能为空', trigger: 'blur' }],
-                    content: [{ required: true, message: '公告内容不能为空', trigger: 'blur' }]
+                    content: [{ required: true, message: '留言内容不能为空', trigger: 'blur' }]
                 }
             },
             //钩子函数，VUE对象初始化完成后自动执行
@@ -200,7 +203,7 @@
                     this.$refs['dataEditForm'].validate((valid) => {
                         if (valid) {
                             // 所有检验通过, 提交数据给后台this.formData
-                            axios.post('/notice/update.do', this.formData).then(response=>{
+                            axios.post('/message/update.do', this.formData).then(response=>{
                                 this.$message({
                                     message: response.data.message,
                                     type: response.data.flag?"success":"error"
@@ -221,7 +224,7 @@
                     this.$refs['dataAddForm'].validate((valid) => {
                         if (valid) {
                             //校验通过,发送post请求到后台执行添加命令
-                            axios.post('/notice/add.do', this.formData).then(response=>{
+                            axios.post('/message/add.do', this.formData).then(response=>{
                                 this.$message({
                                     message: response.data.message,
                                     type: "success"
@@ -243,14 +246,14 @@
                 },
                 //分页查询
                 findPage() {
-                    axios.post('/notice/findPage.do', this.pagination).then(response=>{
+                    axios.post('/message/findPage.do', this.pagination).then(response=>{
                         //判断响应的结果
                         if (response.data.flag){
                             //分页的结果
                             this.dataList = response.data.data.rows;
                             //总记录数
                             this.pagination.total = response.data.data.total;
-                        }else {
+                        } else {
                             this.$message.error(response.data.message);
                         }
                     });
@@ -269,27 +272,13 @@
                 },
                 // 弹出编辑窗口
                 handleUpdate(row) {
+                    // alert(row.id);
                     //首先先重置表单-调用重置表单的方法
                     this.resetForm();
                     //弹出编辑窗口-将dialogFormVisible4Edit的属性改成true
                     this.dialogFormVisible4Edit = true;
                     //发送请求到后台,回显该编辑内容的信息
-                    axios.get('/notice/findById.do?id='+row.id).then(response=>{
-                        if(response.data.flag){
-                            // 绑定数据回显, 编辑的form表单也绑定了这个formData
-                            this.formData = response.data.data;
-                        }else{
-                            this.$message.error(response.data.message);
-                        }
-                    });
-                },
-                handleView(row) {
-                    //首先先重置表单-调用重置表单的方法
-                    this.resetForm();
-                    //弹出编辑窗口-将dialogFormVisible4Edit的属性改成true
-                    this.dialogFormVisible4View = true;
-                    //发送请求到后台,回显该编辑内容的信息
-                    axios.get('/notice/findById.do?id='+row.id).then(response=>{
+                    axios.get('/message/findById.do?id='+row.id).then(response=>{
                         if(response.data.flag){
                             // 绑定数据回显, 编辑的form表单也绑定了这个formData
                             this.formData = response.data.data;
@@ -308,13 +297,13 @@
                 // 删除
                 handleDelete(row) {
                     // alert(row.id);
-                    this.$confirm('此操作将永久删除该维修信息, 是否继续?', '提示', {
+                    this.$confirm('此操作将删除该留言信息, 是否继续?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
                         type: 'warning'
                     }).then(() => {
                         //发送请求到后台执行删除命令
-                        axios.delete('/notice/deleteById.do?id=' + row.id).then(response=>{
+                        axios.post('/message/deleteById.do?id=' + row.id).then(response=>{
                             this.$message({
                                 message: response.data.message,
                                 type: response.data.flag?"success":"error"

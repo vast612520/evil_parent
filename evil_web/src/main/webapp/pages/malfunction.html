@@ -47,7 +47,8 @@
                         <el-table-column prop="theme" label="主题" align="center"></el-table-column>
                         <el-table-column prop="address" label="办公地点" align="center"></el-table-column>
                         <el-table-column prop="trouble" label="故障描述" align="center"></el-table-column>
-                        <el-table-column prop="phone" label="联系电话" align="center">
+                        <el-table-column prop="phone" label="联系电话" align="center"></el-table-column>
+                        <el-table-column prop="phone" label="操作" align="center">
                             <template slot-scope="scope">
                                 <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">审批</el-button>
                                 <el-button size="mini" type="danger" @click="handleDelete(scope.row)">删除</el-button>
